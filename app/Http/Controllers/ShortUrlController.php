@@ -76,7 +76,7 @@ class ShortUrlController extends Controller
             'short_code' => $urlCode
         ]);
 
-        return redirect()->route('short-url.index');
+        return redirect()->route('short-url.index')->with('success', 'URL added successfully!');
     }
 
     /**
@@ -98,9 +98,15 @@ class ShortUrlController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ShortUrlRequest $request, string $id)
     {
-        //
+        // ? should use strong encryption/decryption but now using it for example
+        $id = base64_decode($id);
+        $url = Url::findOrFail($id);
+        $url->long_url = $request->input('original-url');
+        $url->save();
+
+        return redirect()->route('short-url.index')->with('success', 'URL updated successfully!');
     }
 
     /**
@@ -108,7 +114,11 @@ class ShortUrlController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $id = base64_decode($id);
+        Url::where("id", $id)->delete();
+
+        return redirect()->route('short-url.index')->with('success', 'URL deleted successfully!');
+
     }
 
     public function redirectUrl($short_code) {
