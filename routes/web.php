@@ -4,12 +4,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShortUrlController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('index');
-});
-
 // ! short url routes
-Route::resource("short-url", ShortUrlController::class);
+Route::get('/', [ShortUrlController::class, 'index'])->name('short-url.index');
+Route::resource('short-url', ShortUrlController::class)->except(['index']);
+Route::get('/go/{short_code}', [ShortUrlController::class, 'redirectUrl']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

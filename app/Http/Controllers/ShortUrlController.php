@@ -16,6 +16,8 @@ class ShortUrlController extends Controller
      */
     public function index()
     {
+        $urls = collect();
+        
         // ? Check if the user is logged in
         if (Auth::check()) {
             $urls = Url::where('user_id', Auth::user()->id)->get();
@@ -107,5 +109,14 @@ class ShortUrlController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function redirectUrl($short_code) {
+        $url = Url::where('short_code', $short_code)->first();
+        if ($url) {
+            return redirect()->away($url->long_url);
+        }
+
+        return redirect()->route('short-url.index')->with('error', 'Short URL not found.');
     }
 }
