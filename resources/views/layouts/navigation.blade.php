@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 sticky top-0">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 sticky top-0 mb-10 sm:m-0 z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -46,7 +46,7 @@
                     </x-dropdown>
                 </div>
             @else
-                <nav class="-mx-3 flex flex-1 items-center justify-end">
+                <nav class="-mx-3 sm:flex flex-1 items-center justify-end hidden">
                     <a
                         href="{{ route('login') }}"
                         class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
@@ -102,6 +102,22 @@
                     </form>
                 </div>
             </div>
+        @else
+            <nav class="flex items-center justify-end">
+                <a
+                    href="{{ route('login') }}"
+                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                >
+                    Log in
+                </a>
+
+                <a
+                    href="{{ route('register') }}"
+                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                >
+                    Register
+                </a>
+            </nav>
         @endauth
     </div>
 </nav>
