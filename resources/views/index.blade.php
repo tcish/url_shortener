@@ -48,6 +48,7 @@
                   <th scope="col" class="px-6 py-3">Serial</th>
                   <th scope="col" class="px-6 py-3">Original URL</th>
                   <th scope="col" class="px-6 py-3">Short URL</th>
+                  <th scope="col" class="px-6 py-3">Clicked</th>
                   <th scope="col" class="px-6 py-3">Action</th>
                 </tr>
               </thead>
@@ -55,16 +56,21 @@
                 @foreach ($urls as $url)
                   <tr
                     class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4">{{ $loop->iteration }}</th> <!-- Incremental ID -->
-                    <th scope="row" class="px-6 py-4 long-url" data-full-url="{{ $url->long_url }}">
+                    <td scope="row" class="px-6 py-4">{{ $loop->iteration }}</td> <!-- Incremental ID -->
+
+                    <td scope="row" class="px-6 py-4 long-url" data-full-url="{{ $url->long_url }}">
                       {{ $url->long_url }}
-                    </th>
-                    <th scope="row" class="px-6 py-4">
+                    </td>
+
+                    <td scope="row" class="px-6 py-4">
                       <a href="{{ url("/go/" . $url->short_code) }}" target="_blank"
                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                         {{ url("/go/" . $url->short_code) }}
                       </a>
-                    </th>
+                    </td>
+
+                    <td scope="row" class="px-6 py-4">{{ $url->click_count }}</td>
+
                     <td class="px-6 py-4">
                       <a href="#" class="font-medium text-green-600 dark:text-green-500 hover:underline"
                         onclick="copyToClipboard('{{ url("/go/" . $url->short_code) }}')">Copy</a> |
@@ -197,7 +203,7 @@
 
       // call the function after the document is fully loaded
       document.addEventListener('DOMContentLoaded', function() {
-        truncateAndPopover('.long-url', 'full-url', 36);
+        truncateAndPopover('.long-url', 'full-url', 22);
       });
     </script>
   @endpush

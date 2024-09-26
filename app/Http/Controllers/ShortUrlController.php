@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShortUrlRequest;
+use App\Models\ClickDetail;
 use App\Models\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -124,6 +126,17 @@ class ShortUrlController extends Controller
     public function redirectUrl($short_code) {
         $url = Url::where('short_code', $short_code)->first();
         if ($url) {
+            // save the click count
+            $url->click_count = ++$url->click_count;
+            $url->save();
+
+            // log the click details
+            ClickDetail::insert([
+                'url_id'     => $url->id,
+                'ip_address' => FacadesRequest::ip(), // get the user's IP address
+            ]);
+
+            // redirect to the long URL
             return redirect()->away($url->long_url);
         }
 
