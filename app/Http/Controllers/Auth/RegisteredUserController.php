@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Url;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -45,6 +47,13 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // adding all shortened links to database that user added when guest
+        $visitor_token = Session::get("v-token");
+        Url::where("visitor_token", base64_decode($visitor_token))->update([
+            'user_id' => Auth::user()->id,
+            'visitor_token' => null
+        ]);
+
+        return redirect(route('short-url.index', absolute: false));
     }
 }
