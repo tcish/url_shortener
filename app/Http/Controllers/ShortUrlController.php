@@ -8,6 +8,7 @@ use App\Models\Url;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ShortUrlController extends Controller
@@ -165,5 +166,69 @@ class ShortUrlController extends Controller
         }
 
         return view('insight')->with('url_insight', $urls);
+    }
+
+    public function getShortUrl($url) {
+        // Validate the incoming URL
+        $validator = Validator::make(['url' => $url], [
+            'url' => 'required|url' // Ensure the URL is a valid format
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid URL provided!',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        do {
+            $urlCode = Str::random(5);
+            $hasCode = Url::where("short_code", $urlCode)->first();
+        } while (!empty($hasCode)); // ! Keep generating until a unique code is found
+
+        // * For non-logged-in users, check if visitor token exists in the session
+        $visitorToken = Session::get('v-token');
+        if (empty($visitorToken)) {
+            do {
+                $visitorToken = Str::random(5);
+                $hasVisitor = Url::where("visitor_token", $visitorToken)->first();
+            } while (!empty($hasVisitor)); // ! Keep generating until a unique token is found
+
+            // ? should use strong encryption but now using it for example
+            Session::put("v-token", base64_encode($visitorToken));
+        } else {
+            // ! Decode visitor token when fetching it from the session to store plain token
+            $visitorToken = base64_decode($visitorToken);
+        }
+
+        // ! checking for spam protection
+        $hasUrl = Url::where("visitor_token", $visitorToken)->where("long_url", $url)->first();
+
+        if (!$hasUrl) {
+            $inserted = Url::create([
+                'visitor_token' => $visitorToken,
+                'long_url' => $url,
+                'short_code' => $urlCode
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'URL shortened successfully!',
+                'data' => [
+                    'short_url' => url("/{$inserted->short_code}"),
+                    'long_url' => $inserted->long_url,
+                ]
+            ], 201);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'URL shortened successfully!',
+            'data' => [
+                'short_url' => url("/go/{$hasUrl->short_code}"),
+                'long_url' => $hasUrl->long_url,
+            ]
+        ], 201);
     }
 }
