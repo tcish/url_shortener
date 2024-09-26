@@ -1,4 +1,4 @@
-# URL Shortener
+# URL Shortener web & api
 
 ## Introduction
 
@@ -83,6 +83,19 @@ php artisan serve
 
 **Permission**
 - Registered users can manage their own shortened URLs, including viewing and deleting links and accessing details insights.
+
+**API**
+**hit the below apli link to get shorted url**
+- development
+```bash
+http://127.0.0.1:8000/api/short-url/{url}
+or
+http://localhost:8000/api/short-url/{url}
+```
+
+- production
+```bash
+```
 
 ---
 
