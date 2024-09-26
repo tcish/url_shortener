@@ -9,10 +9,11 @@ Route::get('/', [ShortUrlController::class, 'index'])->name('short-url.index');
 Route::post('/short-url/{id}', [ShortUrlController::class, 'update']);
 Route::resource('short-url', ShortUrlController::class)->except(['index', 'update']);
 Route::get('/go/{short_code}', [ShortUrlController::class, 'redirectUrl']);
+Route::get('/insight/{id}', [ShortUrlController::class, 'urlInsights'])->name('short-url.insights');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     // ! default routes by breeze

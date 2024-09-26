@@ -142,4 +142,15 @@ class ShortUrlController extends Controller
 
         return redirect()->route('short-url.index')->with('error', 'Short URL not found.');
     }
+
+    public function urlInsights($id) {
+        $id = base64_decode($id);
+
+        $urls = Url::where("id", $id)->with('clickDetails')->first();
+        if (!$urls) {
+            return redirect()->route('short-url.index');
+        }
+
+        return view('insight')->with('url_insight', $urls);
+    }
 }

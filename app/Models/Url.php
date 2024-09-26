@@ -15,4 +15,8 @@ class Url extends Model
         'long_url',
         'short_code',
     ];
+
+    function clickDetails() {
+        return $this->hasMany(ClickDetail::class);
+    }
 }

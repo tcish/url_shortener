@@ -23,7 +23,7 @@
             {{-- for showing success or error alert --}}
             @if (session("error") || session("success"))
               <div id="alert"
-                class="flex items-center p-4 mb-4 text-sm {{ session("error") ? "text-red-800 border-red-300 bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" : "text-green-800 border-green-300 bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" }}"
+                class="flex items-center p-4 mb-4 text-sm {{ session("error") ? "text-red-800 border-red-300 bg-red-50" : "text-green-800 border-green-300 bg-green-50" }}"
                 role="alert">
 
                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -42,8 +42,8 @@
             @endif
 
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-1">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-1">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" class="px-6 py-3">Serial</th>
                   <th scope="col" class="px-6 py-3">Original URL</th>
@@ -54,8 +54,7 @@
               </thead>
               <tbody>
                 @foreach ($urls as $url)
-                  <tr
-                    class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                  <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b">
                     <td scope="row" class="px-6 py-4">{{ $loop->iteration }}</td> <!-- Incremental ID -->
 
                     <td scope="row" class="px-6 py-4 long-url" data-full-url="{{ $url->long_url }}">
@@ -64,7 +63,7 @@
 
                     <td scope="row" class="px-6 py-4">
                       <a href="{{ url("/go/" . $url->short_code) }}" target="_blank"
-                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        class="font-medium text-blue-600 hover:underline">
                         {{ url("/go/" . $url->short_code) }}
                       </a>
                     </td>
@@ -72,18 +71,20 @@
                     <td scope="row" class="px-6 py-4">{{ $url->click_count }}</td>
 
                     <td class="px-6 py-4">
-                      <a href="#" class="font-medium text-green-600 dark:text-green-500 hover:underline"
+                      <a href="{{ route("short-url.insights", base64_encode($url->id)) }}"
+                        class="font-medium text-green-600 hover:underline">Details</a> |
+
+                      <a href="#" class="font-medium text-green-600 hover:underline"
                         onclick="copyToClipboard('{{ url("/go/" . $url->short_code) }}')">Copy</a> |
 
-                      <a href="#"
-                        class="edit-link font-medium text-yellow-600 dark:text-yellow-500 hover:underline"
+                      <a href="#" class="edit-link font-medium text-yellow-600 hover:underline"
                         onclick="editUrl('{{ $url->long_url }}', '{{ base64_encode($url->id) }}')">Edit</a> |
 
                       <form method="post" action="{{ route("short-url.destroy", base64_encode($url->id)) }}"
                         style="display: inline-block;">
                         @csrf
                         @method("delete")
-                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline"
+                        <button type="submit" class="font-medium text-red-600 hover:underline"
                           onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
                       </form>
                     </td>
