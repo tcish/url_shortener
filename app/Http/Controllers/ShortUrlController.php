@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ShortUrlRequest;
 use App\Models\ClickDetail;
 use App\Models\Url;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
@@ -102,6 +101,11 @@ class ShortUrlController extends Controller
      */
     public function update(ShortUrlRequest $request, string $id)
     {
+        // checking if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         // ? should use strong encryption/decryption but now using it for example
         $id = base64_decode($id);
         $url = Url::findOrFail($id);
@@ -116,11 +120,15 @@ class ShortUrlController extends Controller
      */
     public function destroy(string $id)
     {
+        // checking if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $id = base64_decode($id);
         Url::where("id", $id)->delete();
 
         return redirect()->route('short-url.index')->with('success', 'URL deleted successfully!');
-
     }
 
     public function redirectUrl($short_code) {
@@ -144,6 +152,11 @@ class ShortUrlController extends Controller
     }
 
     public function urlInsights($id) {
+        // checking if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $id = base64_decode($id);
 
         $urls = Url::where("id", $id)->with('clickDetails')->first();
