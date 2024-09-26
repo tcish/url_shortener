@@ -2,10 +2,16 @@
   <div class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="w-full max-w-4xl p-4 sm:p-8 bg-white rounded-lg shadow-md">
       <div class="flex justify-between items-center">
-        <div class="text-4xl font-semibold">Detail Insight</div>
+        <div class="text-3xl font-semibold">Detail Insight</div>
         <a href="{{ route("short-url.index") }}"
-          class="text-black-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><-
-            Back</a>
+          class="text-black-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-2 text-center me-2 mb-2">
+          <svg class="w-5 h-5 text-gray-800 inline-block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 12h14M5 12l4-4m-4 4 4 4" />
+          </svg>
+          Back
+        </a>
       </div>
 
       <hr class="h-px my-4 bg-gray-200 border-0">
@@ -40,7 +46,7 @@
             </tbody>
           </table>
         @else
-          <h1 class="text-center text-3xl text-red-600">Nothing to Show</h1>
+          <h1 class="text-center text-2xl text-red-600">No insights to show</h1>
         @endif
       </div>
     </div>

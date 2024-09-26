@@ -11,10 +11,6 @@ Route::resource('short-url', ShortUrlController::class)->except(['index', 'updat
 Route::get('/go/{short_code}', [ShortUrlController::class, 'redirectUrl']);
 Route::get('/insight/{id}', [ShortUrlController::class, 'urlInsights'])->name('short-url.insights');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     // ! default routes by breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
