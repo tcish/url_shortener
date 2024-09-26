@@ -71,6 +71,12 @@ class ShortUrlController extends Controller
             $visitorToken = base64_decode($visitorToken);
         }
 
+        // ! same user duplication entry checking
+        $hasUrl = Url::where("visitor_token", $visitorToken)->where("long_url", $params["original-url"])->first();
+        if ($hasUrl) {
+            return redirect()->route('short-url.index')->with('error', 'URL already added!');
+        }
+
         Url::create([
             'user_id' => Auth::check() ? Auth::user()->id : null,
             'visitor_token' => Auth::check() ? null : $visitorToken,
