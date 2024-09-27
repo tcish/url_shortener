@@ -95,6 +95,7 @@ http://localhost:8000/api/short-url/{url}
 
 - production
 ```bash
+https://short.000.pe/api/short-url/{url}
 ```
 
 ---
