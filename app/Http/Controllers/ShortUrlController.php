@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ShortUrlRequest;
 use App\Models\ClickDetail;
 use App\Models\Url;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
@@ -174,7 +175,9 @@ class ShortUrlController extends Controller
         return view('insight')->with('url_insight', $urls);
     }
 
-    public function getShortUrl($url) {
+    public function getShortUrl(Request $request) {
+        $url = $request->query('url');
+
         // Validate the incoming URL
         $validator = Validator::make(['url' => $url], [
             'url' => 'required|url' // Ensure the URL is a valid format
