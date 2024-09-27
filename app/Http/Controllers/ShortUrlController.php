@@ -222,7 +222,7 @@ class ShortUrlController extends Controller
                 'success' => true,
                 'message' => 'URL shortened successfully!',
                 'data' => [
-                    'short_url' => url("/{$inserted->short_code}"),
+                    'short_url' => url("/go/{$inserted->short_code}"),
                     'long_url' => $inserted->long_url,
                 ]
             ], 201);
