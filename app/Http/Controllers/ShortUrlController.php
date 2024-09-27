@@ -143,7 +143,7 @@ class ShortUrlController extends Controller
         $url = Url::where('short_code', $short_code)->first();
         if ($url) {
             // save the click count
-            $url->click_count = ++$url->click_count;
+            $url->click_count = $url->click_count++;
             $url->save();
 
             // log the click details
