@@ -11,6 +11,10 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <meta property="og:title" content="URL Shortener" />
+        <meta property="og:description" content="A simple URL shortener that converts long web addresses into short, easy-to-share links." />
+        <meta property="og:url" content="http://short.000.pe" />
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
